@@ -1,4 +1,4 @@
-export function isdiff(lhs: any, rhs: any): boolean {
+export function isdiffWithStack(lhs: any, rhs: any): boolean {
   // 基础类型要求必须完全相同
   // func 也必须要求完全一致
   if (lhs === rhs) return true;
@@ -17,10 +17,10 @@ export function isdiff(lhs: any, rhs: any): boolean {
     if (lhs.length !== rhs.length) return false;
 
     // 不能使用every，[,2] 会直接跳过第一个元素的判断
-    // return lhs.every((item, index) => isdiff(item, rhs[index]));
+    // return lhs.every((item, index) => isdiffWithStack(item, rhs[index]));
 
     for (let i = lhs.length; i--;) {
-      if (!isdiff(lhs[i], rhs[i])) return false;
+      if (!isdiffWithStack(lhs[i], rhs[i])) return false;
     }
     return true;
   }
@@ -35,13 +35,13 @@ export function isdiff(lhs: any, rhs: any): boolean {
 
   const hasCheckedKeys: { [key: string]: true } = Object.create(null);
   return Object.keys(lhs).every((key) => {
-    const ret = isdiff(lhs[key], rhs[key]);
+    const ret = isdiffWithStack(lhs[key], rhs[key]);
     if (ret) hasCheckedKeys[key] = true;
     return ret;
   })
     && Object.keys(rhs).every((key) => {
       if (hasCheckedKeys[key] !== true) {
-        return isdiff(lhs[key], rhs[key]);
+        return isdiffWithStack(lhs[key], rhs[key]);
       }
       return true;
     });
