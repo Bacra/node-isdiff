@@ -67,4 +67,17 @@ describe('#base', () => {
     const func = function() {}
     expect(isdiff(func, func)).to.be(true);
   });
+
+  it('#cycle', () => {
+    const obj1 = {};
+    const obj2 = {};
+
+    obj1.a = obj1;
+    obj2.a = obj2;
+
+    expect(isdiff(obj1, obj2)).to.be(false);
+    expect(isdiff(obj1, { a: { a: { a: {} }}})).to.be(false);
+    expect(isdiff({ a: { a: { a: {} }}}, obj1)).to.be(false);
+    expect(isdiff({ a: obj1 }, obj1)).to.be(true);
+  });
 });
