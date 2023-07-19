@@ -1,0 +1,32 @@
+{
+  "name": "isdiff",
+  "version": "0.0.0",
+  "description": "is diff between objects",
+  "main": "dist/index",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "prepack": "npm run build",
+    "test": "mocha test/test_*",
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "mocha": "^8.0.1",
+    "typescript": "^4.9.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Bacra/node-isdiff.git"
+  },
+  "keywords": [
+    "diff",
+    "deep"
+  ],
+  "author": "Bacra Woo<bacra.woo@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Bacra/node-isdiff/issues"
+  },
+  "homepage": "https://github.com/Bacra/node-isdiff"
+}
