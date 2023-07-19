@@ -1,6 +1,6 @@
 {
   "name": "isdiff",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "is diff between objects",
   "main": "dist/index",
   "types": "dist/index.d.ts",
