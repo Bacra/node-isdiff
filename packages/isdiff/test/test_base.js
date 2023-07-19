@@ -57,7 +57,6 @@ describe('#base', () => {
     expect(isdiff([1, 2], [1])).to.be(false);
     expect(isdiff([1], [1, 2])).to.be(false);
 
-    debugger;
     expect(isdiff([, 2], [1, 2])).to.be(false);
   });
 
