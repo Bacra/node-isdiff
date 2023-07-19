@@ -1,7 +1,8 @@
-const { isdiff } = require('../');
+const { isdiff, isdiffWithoutCycle } = require('../');
 const expect = require('expect.js');
 
-describe('#base', () => {
+
+function runBase(isdiff) {
   it('#basetype', () => {
     expect(isdiff(1, 1)).to.be(true);
     expect(isdiff('abc', 'abc')).to.be(true);
@@ -66,6 +67,11 @@ describe('#base', () => {
     const func = function() {}
     expect(isdiff(func, func)).to.be(true);
   });
+}
+
+describe('#isdiff', () => {
+
+  runBase(isdiff);
 
   it('#cycle', () => {
     const obj1 = {};
@@ -79,4 +85,9 @@ describe('#base', () => {
     expect(isdiff({ a: { a: { a: {} }}}, obj1)).to.be(false);
     expect(isdiff({ a: obj1 }, obj1)).to.be(true);
   });
+});
+
+
+describe('#isdiffWithoutCycle', () => {
+  runBase(isdiffWithoutCycle);
 });

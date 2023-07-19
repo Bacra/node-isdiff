@@ -1,4 +1,4 @@
-export function isdiffWithStack(lhs: any, rhs: any, stackLhs: any[]): boolean {
+export function isdiffWithStack(lhs: any, rhs: any, stackLhs: any[] | false): boolean {
   // 基础类型要求必须完全相同
   // func 也必须要求完全一致
   if (lhs === rhs) return true;
@@ -12,7 +12,7 @@ export function isdiffWithStack(lhs: any, rhs: any, stackLhs: any[]): boolean {
   if (ltype !== 'object') return false;
   if (ltype !== typeof rhs) return false;
 
-  if (stackLhs.indexOf(lhs) !== -1) {
+  if (stackLhs && stackLhs.indexOf(lhs) !== -1) {
     // 进入死循环了
     // 已经判断 lhs 和 rhs不相同，所以这里不用判断了
     return false;
@@ -22,29 +22,51 @@ export function isdiffWithStack(lhs: any, rhs: any, stackLhs: any[]): boolean {
     if (!Array.isArray(rhs)) return false;
     if (lhs.length !== rhs.length) return false;
 
-    stackLhs.push(lhs);
-    // 不能使用every，[,2] 会直接跳过第一个元素的判断
-    // return lhs.every((item, index) => isdiffWithStack(item, rhs[index], stackLhs));
-
-    for (let i = lhs.length; i--;) {
-      if (!isdiffWithStack(lhs[i], rhs[i], stackLhs)) return false;
+    if (stackLhs) {
+      stackLhs.push(lhs);
+      const ret = isdiffArray(lhs, rhs, stackLhs);
+      if (!ret) return false;
+      stackLhs.length -= 1;
+      return true;
+    } else {
+      return isdiffArray(lhs, rhs, false);
     }
-    stackLhs.length -= 1;
-    return true;
   }
 
   if (Array.isArray(rhs)) return false;
 
+  if (stackLhs) {
+    stackLhs.push(lhs);
+    const ret = isdffObject(lhs, rhs, stackLhs);
+    if (!ret) return false;
+    stackLhs.length -= 1;
+    return true;
+  } else {
+    return isdffObject(lhs, rhs, false);
+  }
+}
+
+
+function isdiffArray(lhs: any[], rhs: any[], stackLhs: any[] | false): boolean {
+  // 不能使用every，[,2] 会直接跳过第一个元素的判断
+  // return lhs.every((item, index) => isdiffWithStack(item, rhs[index], stackLhs));
+
+  for (let i = lhs.length; i--;) {
+    if (!isdiffWithStack(lhs[i], rhs[i], stackLhs)) return false;
+  }
+
+  return true;
+}
+
+function isdffObject(lhs: any, rhs: any, stackLhs: any[] | false): boolean {
   // const lkeys = Object.keys(lhs);
   // const rkeys = Object.keys(rhs);
 
   // 不能直接判断keys的长度，需要考虑undefined
   // if (lkeys.length !== rkeys.length) return false;
 
-  stackLhs.push(lhs);
-
   const hasCheckedKeys: { [key: string]: true } = Object.create(null);
-  const ret = Object.keys(lhs).every((key) => {
+  return Object.keys(lhs).every((key) => {
     const ret = isdiffWithStack(lhs[key], rhs[key], stackLhs);
     if (ret) hasCheckedKeys[key] = true;
     return ret;
@@ -55,9 +77,4 @@ export function isdiffWithStack(lhs: any, rhs: any, stackLhs: any[]): boolean {
       }
       return true;
     });
-  if (!ret) return false;
-
-  stackLhs.length -= 1;
-
-  return true;
 }
