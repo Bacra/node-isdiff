@@ -1,7 +1,7 @@
 {
   "name": "isdiff",
   "version": "1.0.0",
-  "description": "is diff between objects",
+  "description": "Find Differences Between two JavaScript Objects",
   "main": "dist/index",
   "types": "dist/index.d.ts",
   "scripts": {
