@@ -10,9 +10,9 @@ export function equalWithoutCycle(lhs: any, rhs: any): boolean {
 
 
 export function isdiff(lhs: any, rhs: any): boolean {
-  return !equalWithStack(lhs, rhs, []);
+  return !equal(lhs, rhs);
 }
 
 export function isdiffWithoutCycle(lhs: any, rhs: any): boolean {
-  return !equalWithStack(lhs, rhs, false);
+  return !equalWithoutCycle(lhs, rhs);
 }
