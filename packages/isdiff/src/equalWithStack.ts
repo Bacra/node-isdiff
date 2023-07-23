@@ -65,7 +65,7 @@ function equalObject(lhs: any, rhs: any, stackLhs: any[] | false): boolean {
   // 不能直接判断keys的长度，需要考虑undefined
   // if (lkeys.length !== rkeys.length) return false;
 
-  const hasCheckedKeys: { [key: string]: true } = Object.create(null);
+  const hasCheckedKeys: { [key: string]: true } = createMap();
   return Object.keys(lhs).every((key) => {
     const ret = equalWithStack(lhs[key], rhs[key], stackLhs);
     if (ret) hasCheckedKeys[key] = true;
@@ -78,3 +78,7 @@ function equalObject(lhs: any, rhs: any, stackLhs: any[] | false): boolean {
       return true;
     });
 }
+
+const createMap = typeof Object.create === 'function'
+  ? () => Object.create(null)
+  : () => ({});
