@@ -1,4 +1,5 @@
 packages/*/dist/
+packages/*/browser_dist/
 
 node_modules
 coverage
